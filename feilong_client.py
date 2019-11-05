@@ -4,22 +4,46 @@
 import requests
 import json
 
-welcome_message = """
->>>> [!] Feilong REST API Client [!] <<<<
+# Global configuration
+config_file = open("config.json", 'r')
+config = json.load(config_file)
+feilong_server = config["config"]["server_ip"]
+feilong_port = config["config"]["server_port"]
+
+welcome_message = """>>>> [!] Feilong REST API Client [!] <<<<
 please configure the payload file according to
 what URL you want to send. If you choose to
 send a POST request then please note that you
 Have to fill out a JSON object file that corresponds
 with the request you are willing to make.
 """
+
+def configure():
+	config_file = open("config.json", 'w')
+	new_ip = input("New server IP address: ")
+	new_port = input("New server TCP port: ")
+
+	# configure with new parameters
+	config["config"]["server_ip"] = new_ip
+	config["config"]["server_port"] = new_port
+
+	json_object = json.dumps(config, sort_keys=True, indent=4)
+	config_file.write(json_object)
+	config_file.close()
+
 def print_menu():
 	print("""
+[!] CONFIG
+[!] SERVER IP: {0}
+[!] SERVER PORT: {1}
+
 [+] MENU
 1: send GET request
 2: send POST request
-3: print menu text again
-4: exit program
-""")
+3: configure client
+4: print this menu again
+5: exit program
+""".format(feilong_server, feilong_port))
 
 def exit_program():
 	print("Goodbye!")
@@ -40,15 +64,16 @@ def send_get_request():
 def send_post_request():
 	api_name = input("Please provide the API name: ")
 	request_url = '{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
+	
 
 	# Read the data for POST request
-	json_file = open("data.json", 'r')
-	json_data = json.read(json_file)
+	# Open a file with the same api name
+	# ending with the suffix '.json'
+	json_file = open("request_data/" + api_name + ".json", 'r')
+	json_data = json.load(json_file)
 	json_file.close()
 
-	response = requests.post(request_url)
-
-	print
+	print(json_data)
 
 # Use a dispatch table technique to
 # choose which function we will execute
@@ -56,8 +81,9 @@ def switch_choice(user_choice):
 	table = {
 		1: send_get_request,
 		2: send_post_request,
-		3: print_menu,
-		4: exit_program
+		3: configure,
+		4: print_menu,
+		5: exit_program
 	}
 
 	# execute desired function
