@@ -19,13 +19,14 @@ with the request you are willing to make.
 """
 
 def configure():
+	global feilong_server, feilong_port
 	config_file = open("config.json", 'w')
-	new_ip = input("New server IP address: ")
-	new_port = input("New server TCP port: ")
+	feilong_server = input("New server IP address: ")
+	feilong_port = input("New server TCP port: ")
 
 	# configure with new parameters
-	config["config"]["server_ip"] = new_ip
-	config["config"]["server_port"] = new_port
+	config["config"]["server_ip"] = feilong_server
+	config["config"]["server_port"] = feilong_port
 
 	json_object = json.dumps(config, sort_keys=True, indent=4)
 	config_file.write(json_object)
@@ -54,7 +55,7 @@ def exit_program():
 # Feilong API...
 def send_get_request():
 	api_name = input("Please provide the API name: ")
-	request_url = '{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
+	request_url = 'http://{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
 	response = requests.get(request_url)
 
 	print(response.text)
@@ -63,7 +64,7 @@ def send_get_request():
 # the Feilong API...
 def send_post_request():
 	api_name = input("Please provide the API name: ")
-	request_url = '{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
+	request_url = 'http://{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
 	
 
 	# Read the data for POST request
@@ -73,7 +74,7 @@ def send_post_request():
 	json_data = json.load(json_file)
 	json_file.close()
 
-	print(json_data)
+	print("[!] Preview of request:\n{0}".format(json_data))
 
 # Use a dispatch table technique to
 # choose which function we will execute
@@ -97,8 +98,9 @@ if __name__ == "__main__":
 	while True:
 		try:
 			user_choice = int(input("[menu] > "))
-			switch_choice(user_choice)
 		except ValueError as e:
 			print("[ERROR]: Please use a valid integer for a choice!")
 			print("[DEBUG]: error: {0}".format(e))
 			user_value = 0 # clear user value!
+			
+		switch_choice(user_choice)

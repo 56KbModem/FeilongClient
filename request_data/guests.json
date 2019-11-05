@@ -8,7 +8,7 @@
       "disk_list":[
       {
           "size": "1g",
-          "is_boot_disk": True,
+          "is_boot_disk": "True",
           "disk_pool": "ECKD:eckdpool1"
       },
       {
