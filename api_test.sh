@@ -4,7 +4,11 @@
 # October 2019
 # Nick Snel - ICU IT Services
 
-# 
+# This was a prototype I made to quickly
+# test Feilong about a month before I
+# decided to rewrite it in python.
+# For all intents and purposes this file
+# should be viewed as deprecated.
 
 ## GLOBAL CONFIGURATION 
 SERVER='192.168.100.200' # API server address
@@ -80,7 +84,7 @@ if [[ $user_input == "Y" || $user_input == "y" ]]; then
 		send_get_request $LOCATION;
 		exit 0;
 	fi
-	if [[ $HTTP_TYPE == 'POST']]; then
+	if [[ $HTTP_TYPE == 'POST' ]]; then
 		echo '[+]: detected HTTP POST';
 	fi
 else
