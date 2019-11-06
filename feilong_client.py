@@ -63,6 +63,7 @@ def send_get_request():
 # Send a HTTP POST request to
 # the Feilong API...
 def send_post_request():
+	editing = 1   # do we want to edit the request?
 	api_name = input("Please provide the API name: ")
 	request_url = 'http://{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
 	
@@ -74,7 +75,24 @@ def send_post_request():
 	json_data = json.load(json_file)
 	json_file.close()
 
-	print("[!] Preview of request:\n{0}".format(json_data))
+	while editing:
+		print("[!] Preview of request:\n{0}".format(json_data))
+		user_input = input("Do you wish to edit some of the parameters? [Y/n]: ")
+		if user_input == 'Y' or user_input == 'y':
+			key = input("Key to edit: ")
+			value = input("New value for key: ")
+
+			try:
+				json_data[key] = value
+			except KeyError:
+				print("The key {key} does not exist".format(key))
+
+		elif user_input == 'N' or user_input == 'n':
+			editing = 0
+			print("[+] Sending POST request!")
+			
+		else:
+			print("Please use")
 
 # Use a dispatch table technique to
 # choose which function we will execute
