@@ -1,14 +1,14 @@
 {
   "guest":
   {
-      "userid": "id001",
-      "vcpus": 1,
+      "userid": "TEST2",
+      "vcpus": 2,
       "memory": 1024,
       "user_profile": "",
       "disk_list":[
       {
-          "size": "1g",
-          "is_boot_disk": "True",
+          "size": "512m",
+          "is_boot_disk": true,
           "disk_pool": "ECKD:eckdpool1"
       },
       {
@@ -16,7 +16,7 @@
           "disk_pool": "FBA:fbapool1",
           "format": "ext3"
       }],
-      "max_cpu": 10,
-      "max_mem": "32G"
+      "max_cpu": 2,
+      "max_mem": "4G"
   }
 }
