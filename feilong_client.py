@@ -3,6 +3,7 @@
 # External library includes
 import requests
 import json
+from time import strftime, localtime
 
 # Global configuration
 config_file = open("config.json", 'r')
@@ -58,12 +59,16 @@ def send_get_request():
 	request_url = 'http://{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
 	response = requests.get(request_url)
 
+	# Log the event
+	event = {"last_query": request_url}
+	event["last_query_time"] = strftime("%Y-%m-%d %H:%M:%S", localtime())
+	log_event(event)
+
 	print(response.text)
 
 # Send a HTTP POST request to
 # the Feilong API...
 def send_post_request():
-	editing = 1   # do we want to edit the request?
 	api_name = input("Please provide the API name: ")
 	request_url = 'http://{0}:{1}/{2}'.format(feilong_server, feilong_port, api_name)
 	
@@ -75,10 +80,11 @@ def send_post_request():
 	json_data = json.load(json_file)
 	json_file.close()
 
+	editing = 1   # do we want to edit the request? default to yes when ran first time
 	while editing:
 		print("[!] Preview of request:\n{0}".format(json_data))
 		user_input = input("Do you wish to edit some of the parameters? [Y/n]: ")
-		if user_input == 'Y' or user_input == 'y':
+		if user_input.upper() == 'Y':
 			key = input("Key to edit: ")
 			value = input("New value for key: ")
 
@@ -87,12 +93,34 @@ def send_post_request():
 			except KeyError:
 				print("The key {key} does not exist".format(key))
 
-		elif user_input == 'N' or user_input == 'n':
+		elif user_input.upper() == 'N':
 			editing = 0
 			print("[+] Sending POST request!")
 			
 		else:
-			print("Please use")
+			print("Please use Y or N")
+
+
+
+# Log requests back into our config file
+# uses local system clock in event
+# param: event: 
+def log_event(event=None):
+	if event == None:
+		return
+	else:
+		config_file = open("config.json", 'r')
+		config = json.load(config_file)
+		config_file.close()
+
+		# Update new event
+		config["diagnostics"].update(event)
+		config["diagnostics"]["request_count"] += 1	
+
+		# Write back to config file
+		config_file = open("config.json", 'w')
+		config_file.write(json.dumps(config, sort_keys=True, indent=4))
+		config_file.close
 
 # Use a dispatch table technique to
 # choose which function we will execute
