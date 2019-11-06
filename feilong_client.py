@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 
 # External library includes
-import requests
-import json
-from time import strftime, localtime
+import requests # for accessing the REST API
+import json # for manipulating JSON data
+from time import strftime, localtime # for timestamping
+import os, subprocess
+
 
 # Global configuration
-config_file = open("config.json", 'r')
+config_file = open("config.json", 'r') # config file
 config = json.load(config_file)
-feilong_server = config["config"]["server_ip"]
-feilong_port = config["config"]["server_port"]
+feilong_server = config["config"]["server_ip"] # global ip address
+feilong_port = config["config"]["server_port"] # global tcp-port 
+config_file.close()
+
+# Set file editor
+EDITOR = os.environ.get('EDITOR') if os.environ.get('EDITOR') else 'vim'
 
 welcome_message = """>>>> [!] Feilong REST API Client [!] <<<<
 please configure the payload file according to
@@ -19,6 +25,9 @@ Have to fill out a JSON object file that corresponds
 with the request you are willing to make.
 """
 
+# This function is used to edit the
+# configuration, then writes it
+# back into the file.
 def configure():
 	global feilong_server, feilong_port
 	config_file = open("config.json", 'w')
@@ -64,7 +73,7 @@ def send_get_request():
 	event["last_query_time"] = strftime("%Y-%m-%d %H:%M:%S", localtime())
 	log_event(event)
 
-	print(response.text)
+	print("[+] RESPONSE: \n{0}".format(response.text))
 
 # Send a HTTP POST request to
 # the Feilong API...
@@ -83,28 +92,22 @@ def send_post_request():
 	editing = 1   # do we want to edit the request? default to yes when ran first time
 	while editing:
 		print("[!] Preview of request:\n{0}".format(json_data))
-		user_input = input("Do you wish to edit some of the parameters? [Y/n]: ")
-		if user_input.upper() == 'Y':
-			key = input("Key to edit: ")
-			value = input("New value for key: ")
-
-			try:
-				json_data[key] = value
-			except KeyError:
-				print("The key {key} does not exist".format(key))
-
-		elif user_input.upper() == 'N':
+		user_input = input("[S]end request, [E]dit file, [A]bort: ")
+		if user_input.upper() == 'S':
 			editing = 0
-			print("[+] Sending POST request!")
-			
-		else:
-			print("Please use Y or N")
+			print("[+] sending post request to {0}:{1}".format(feilong_server, feilong_port))
+		elif user_input.upper() == 'E':
+			subprocess.call([EDITOR, "request_data/" + api_name + ".json"])
+		elif user_input.upper() == "A":
+			print("[+] Aborting...")
+			return
 
 
 
 # Log requests back into our config file
 # uses local system clock in event
-# param: event: 
+# param: event: dictionary holding
+# last query made and the timestamp
 def log_event(event=None):
 	if event == None:
 		return
@@ -124,6 +127,8 @@ def log_event(event=None):
 
 # Use a dispatch table technique to
 # choose which function we will execute
+# param: user_choice: integer representing
+# the function the user wants to call
 def switch_choice(user_choice):
 	table = {
 		1: send_get_request,
