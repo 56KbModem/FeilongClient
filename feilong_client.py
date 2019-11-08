@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
+# Simple Feilong API Client
+# November 2019
+# Nick Snel - ICU IT Services
+
 # External library includes
 import requests # for accessing the REST API
 import json # for manipulating JSON data
 from time import strftime, localtime # for timestamping
-import os, subprocess
+import os, subprocess # for calling our editor, checking environ
 
 
 # Global configuration

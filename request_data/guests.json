@@ -4,18 +4,8 @@
       "userid": "TEST2",
       "vcpus": 2,
       "memory": 1024,
-      "user_profile": "",
-      "disk_list":[
-      {
-          "size": "512m",
-          "is_boot_disk": true,
-          "disk_pool": "ECKD:eckdpool1"
-      },
-      {
-          "size": "200000",
-          "disk_pool": "FBA:fbapool1",
-          "format": "ext3"
-      }],
+      "user_profile": "TCPCMSU",
+      "disk_list":[],
       "max_cpu": 2,
       "max_mem": "4G"
   }
