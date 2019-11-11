@@ -22,11 +22,7 @@ config_file.close()
 EDITOR = os.environ.get('EDITOR') if os.environ.get('EDITOR') else 'vim'
 
 welcome_message = """>>>> [!] Feilong REST API Client [!] <<<<
-please configure the payload file according to
-what URL you want to send. If you choose to
-send a POST request then please note that you
-Have to fill out a JSON object file that corresponds
-with the request you are willing to make.
+
 """
 
 # This function is used to edit the
@@ -173,4 +169,4 @@ if __name__ == "__main__":
 		except ValueError as e:
 			print("[ERROR]: Please use a valid integer for a choice!")
 			print("[DEBUG]: error: {0}".format(e))
-			user_value = 0 # clear user value!
+			user_choice = 0 # clear user value!

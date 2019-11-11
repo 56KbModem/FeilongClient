@@ -4,8 +4,8 @@
         "server_port": "8080"
     },
     "diagnostics": {
-        "last_query": "http://192.168.100.200:8080/guests",
-        "last_query_time": "2019-11-08 10:41:13",
-        "request_count": 28
+        "last_query": "http://192.168.100.200:8080/host",
+        "last_query_time": "2019-11-08 14:21:11",
+        "request_count": 30
     }
 }
