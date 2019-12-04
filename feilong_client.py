@@ -51,9 +51,10 @@ def print_menu():
 [+] MENU
 1: send GET request
 2: send POST request
-3: configure client
-4: print this menu again
-5: exit program
+3: send DELETE request
+4: configure client
+5: print this menu again
+6: exit program
 """.format(feilong_server, feilong_port))
 
 def exit_program():
@@ -120,7 +121,13 @@ def send_post_request():
 		else:
 			user_input = input("[S]end request, [E]dit file, [A]bort: ")
 
+def send_delete_request():
+	user_id = input("Please provide the userid to delete: ")
+	request_url = "http://{0}:{1}/guests/{2}".format(feilong_server, feilong_port, user_id)
 
+	print("Sending delete API call for user: {0}".format(user_id))
+	response = requests.delete(request_url)
+	print("[+] RESPONSE:\n{0}".format(response.text))
 
 # Log requests back into our config file
 # uses local system clock in event
@@ -152,9 +159,10 @@ if __name__ == "__main__":
 	table = {
 		1: send_get_request,
 		2: send_post_request,
-		3: configure,
-		4: print_menu,
-		5: exit_program
+		3: send_delete_request,
+		4: configure,
+		5: print_menu,
+		6: exit_program
 	}
 
 	print(welcome_message)

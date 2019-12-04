@@ -1,11 +1,18 @@
 {
   "guest":
   {
-      "userid": "TEST2",
+      "userid": "TEST3",
       "vcpus": 2,
       "memory": 1024,
       "user_profile": "TCPCMSU",
-      "disk_list":[],
+      "disk_list":[
+       {
+        "size": "1g",
+		"format": "ext4",
+        "is_boot_disk": true,
+        "disk_pool":"ECKD:eckdpool"
+       }
+       ],
       "max_cpu": 2,
       "max_mem": "4G"
   }
