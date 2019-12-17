@@ -5,7 +5,7 @@
     },
     "diagnostics": {
         "last_query": "http://192.168.100.200:8080/guests",
-        "last_query_time": "2019-12-04 11:58:30",
-        "request_count": 58
+        "last_query_time": "2019-12-17 14:58:50",
+        "request_count": 101
     }
 }

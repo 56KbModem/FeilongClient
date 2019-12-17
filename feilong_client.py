@@ -85,9 +85,14 @@ def send_post_request():
 	# Read the data for POST request
 	# Open a file with the same api name
 	# ending with the suffix '.json'
-	json_file = open("request_data/" + api_name + ".json", 'r')
-	json_data = json.load(json_file)
-	json_file.close()
+	try:
+		json_file = open("request_data/" + api_name + ".json", 'r')
+		json_data = json.load(json_file)
+		json_file.close()
+	except FileNotFoundError as e:
+		print("[ERROR]: The requested resource is not implemented in this script")
+		print("[!]: Not found: {0}".format(api_name))
+		return
 
 	editing = 1   # do we want to edit the request? default to yes when ran first time
 	while editing:
@@ -125,7 +130,7 @@ def send_delete_request():
 	user_id = input("Please provide the userid to delete: ")
 	request_url = "http://{0}:{1}/guests/{2}".format(feilong_server, feilong_port, user_id)
 
-	print("Sending delete API call for user: {0}".format(user_id))
+	print("Sending delete API call for user: {0}".format(user_id.upper()))
 	response = requests.delete(request_url)
 	print("[+] RESPONSE:\n{0}".format(response.text))
 
@@ -176,5 +181,4 @@ if __name__ == "__main__":
 				func()
 		except ValueError as e:
 			print("[ERROR]: Please use a valid integer for a choice!")
-			print("[DEBUG]: error: {0}".format(e))
 			user_choice = 0 # clear user value!
