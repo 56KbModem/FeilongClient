@@ -3,3 +3,7 @@
 
 # ignore python bytecode files
 *.pyc
+
+# ignore config file (will be edited with every request made)
+# and the request data file for HTTP POST data
+*.json
