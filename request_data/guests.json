@@ -7,10 +7,10 @@
       "user_profile": "LNXPDFLT",
       "disk_list":[
        {
-        "size": "2M",
+        "size": "8G",
         "format": "ext4",
         "is_boot_disk": true,
-        "disk_pool":"FBA:POOL1"
+        "disk_pool": "DSCSI:virtualpool"
        }
        ],
       "max_cpu": 2,
