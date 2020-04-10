@@ -1,7 +1,7 @@
 {
   "guest":
   {
-      "userid": "TEST4",
+      "userid": "TEST2",
       "vcpus": 2,
       "memory": 1024,
       "user_profile": "LNXPDFLT",

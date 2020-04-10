@@ -53,9 +53,17 @@ def print_menu():
 2: send POST request
 3: send DELETE request
 4: configure client
-5: print this menu again
+5: refresh screen
 6: exit program
 """.format(feilong_server, feilong_port))
+
+# clear screen and print menu
+def refresh():
+	if os.name == "nt":
+		_ = os.system("cls")
+	elif os.name == "posix":
+		_ = os.system("clear")
+	print_menu()
 
 def exit_program():
 	print("Goodbye!")
@@ -166,7 +174,7 @@ if __name__ == "__main__":
 		2: send_post_request,
 		3: send_delete_request,
 		4: configure,
-		5: print_menu,
+		5: refresh,
 		6: exit_program
 	}
 
